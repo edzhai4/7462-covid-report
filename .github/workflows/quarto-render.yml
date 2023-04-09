@@ -1,6 +1,4 @@
 on:
-  schedule:
-    - cron:  '0 * * * *'
   push:
     branches: main
   workflow_dispatch:
@@ -38,16 +36,7 @@ jobs:
                any::readr
                any::lubridate
                any::forcats
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          version: '310.0.0'
-          service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          
-      - name: Run R script
-        run: |
-          Rscript my_script.R
+
       - name: Render document
         uses: quarto-dev/quarto-actions/render@v2
         with:
@@ -58,7 +47,6 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-
       - name: Commit
         run: |
           git add .
